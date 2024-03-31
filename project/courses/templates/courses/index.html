@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+  {% block main %}
+<h2 class="text-light mt-5">Категории: </h2>
+    {% include 'courses/components/_categories.html' %}
+{% for article in articles %}
+<a href="{% url 'article' article.pk %}" style="text-decoration: none;">
+<div class="movie_card" style="
+box-shadow: 0px 0px 150px -45px {{ article.category.theme }};
+  &:hover{
+    box-shadow: 0px 0px 120px -55px {{ article.category.theme }};
+  }">
+  <div class="info_section">
+    <div class="movie_header">
+
+      <h1>{{ article.title }}</h1>
+      <h4>{{ article.category }}</h4>
+
+    </div>
+    <div class="movie_desc">
+      <p class="text">
+         {{ article.content|truncatewords:20 }}
+      </p>
+    </div>
+    <div class="movie_social">
+      <ul>
+        <li><i class="material-icons">share</i></li>
+        <li><i class="material-icons"></i></li>
+        <li><i class="material-icons">chat_bubble</i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="blur_back bright_back" style="
+  background: url('https://cdn.express24.uz/i/732/1500/upload/iblock/755/75598c41b143f44ae1925786a19d7a88.jpg');
+"></div>
+</div>
+</a>
+
+
+{% endfor %}
+
+  {% endblock main %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="card bg-dark mt-5">
+    <div class="card-body text-light">
+        <h1 class="text-center mt-5">{{ article.title }}</h1>
+
+        <div class="d-flex justify-content-between mt-5">
+            <a href="" class="text-light h3">{{ article.category }}</a>
+            <a href="{% url 'profile' article.author.pk %}" class="text-light h3">Автор статьи: {{ article.author }}</a>
+            <a href="" class="text-light h3">Комментарии</a>
+            {% if request.user == article.author %}
+                <a href="{% url 'update' article.pk %}" class="btn btn-warning">Изменить</a>
+                <a href="{% url 'delete' article.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+        </div>
+        <p>{{ article.content|linebreaks }}</p>
+
+        <h3 class="text-light">Комментарии: </h3>
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'save_comment' article.pk %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="btn btn-success">Оставить комментарий</button>
+            </form>
+        {% endif %}
+
+        {% for comment in comments %}
+            <div class="card bg-dark text-light mt-5 p-4">
+                <h3>{{ comment.user }}</h3>
+                <p>{{ comment.text }}</p>
+                <span>{{ comment.created_at }}</span>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock main %}
